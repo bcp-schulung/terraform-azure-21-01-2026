@@ -116,10 +116,10 @@ resource "azurerm_linux_virtual_machine" "main" {
   }
 
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
-    version   = "latest"
+    publisher = var.source_manager_publisher
+    offer     = var.source_manager_offer
+    sku       = var.source_manager_sku
+    version   = var.source_manager_version
   }
 
   tags = var.tags

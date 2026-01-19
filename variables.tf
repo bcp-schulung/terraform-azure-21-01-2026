@@ -40,5 +40,34 @@ variable "tags" {
   default = {
     Environment = "Development"
     Project     = "TerraformAzureVM"
+
+    
   }
 }
+
+
+    variable "source_manager_publisher"{
+         description = "publisher"
+  type        = string
+  default     = "Canonical"
+    }
+    
+      variable "source_manager_offer"{
+                 description = "offer"
+  type        = string
+  default     = "0001-com-ubuntu-server-jammy"
+    }
+
+       variable "source_manager_sku"{
+                 description = "sku"
+  type        = string
+  default     = "22_04-lts"
+    }
+
+        variable "source_manager_version"{
+         description = "version"
+  type        = string
+  default     = "latest"
+
+   
+ }
