@@ -41,7 +41,8 @@ resource "azurerm_subnet" "main" {
 
 # Create a Public IP
 resource "azurerm_public_ip" "main" {
-  name                = "${var.prefix}-pip"
+    count = 2
+  name                = "${var.prefix}-pip-${count.index}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   allocation_method   = "Static"
@@ -73,7 +74,8 @@ resource "azurerm_network_security_group" "main" {
 
 # Create a Network Interface
 resource "azurerm_network_interface" "main" {
-  name                = "${var.prefix}-nic"
+    count = 2
+  name                = "${var.prefix}-nic-${count.index}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 
@@ -81,7 +83,7 @@ resource "azurerm_network_interface" "main" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.main.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.main.id
+    public_ip_address_id          = azurerm_public_ip.main[count.index].id
   }
 
   tags = var.tags
@@ -89,20 +91,22 @@ resource "azurerm_network_interface" "main" {
 
 # Associate NSG with NIC
 resource "azurerm_network_interface_security_group_association" "main" {
-  network_interface_id      = azurerm_network_interface.main.id
+    count                     = 2
+  network_interface_id      = azurerm_network_interface.main[count.index].id
   network_security_group_id = azurerm_network_security_group.main.id
 }
 
 # Create the Virtual Machine
 resource "azurerm_linux_virtual_machine" "main" {
-  name                = "${var.prefix}-vm"
+    count = 2
+  name                = "${var.prefix}-vm-${count.index}"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   size                = var.vm_size
   admin_username      = var.admin_username
 
   network_interface_ids = [
-    azurerm_network_interface.main.id,
+    azurerm_network_interface.main[count.index].id,
   ]
 
   admin_ssh_key {
