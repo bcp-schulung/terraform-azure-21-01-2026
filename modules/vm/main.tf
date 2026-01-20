@@ -1,13 +1,13 @@
 # Create the Virtual Machine
 resource "azurerm_linux_virtual_machine" "main" {
-  name                = "${var.prefix}-vm-${count.index}"
+  name                = "${var.prefix}-vm"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   size                = var.vm_size
   admin_username      = var.admin_username
 
   network_interface_ids = [
-    azurerm_network_interface.main.id,
+    var.network_interface_id,
   ]
 
   admin_ssh_key {

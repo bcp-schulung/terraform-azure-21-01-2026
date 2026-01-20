@@ -1,13 +1,1 @@
-# Example variable values - copy to terraform.tfvars and customize
-
-prefix              = "myvm"
-resource_group_name = "myvm-rg"
-location            = "Germany West Central"
-vm_size             = "Standard_B2s"
-admin_username      = "azureuser"
-ssh_public_key_path = "~/.ssh/id_rsa.pub"
-
-tags = {
-  Environment = "Development"
-  Project     = "TerraformAzureVM"
-}
+prefix              = "test"

@@ -1,18 +1,16 @@
 variable "prefix" {
   description = "Prefix for all resource names"
   type        = string
-  default     = "lukasvm"
 }
+
 variable "resource_group_location" {
   description = "name of the resource group location"
-  type = string
-  default = "value"
-  
+  type = string  
 }
+
 variable "resource_group_name" {
   description = "Name of the resource group"
   type        = string
-  default     = "rg-tf-lab"
 }
 
 variable "location" {
@@ -45,8 +43,6 @@ variable "tags" {
   default = {
     Environment = "Development"
     Project     = "TerraformAzureVM"
-
-
   }
 }
 
@@ -72,4 +68,14 @@ variable "source_manager_version" {
   description = "version"
   type        = string
   default     = "latest"
+}
+
+variable "public_ip" {
+  description = "value of the public ip in use"
+  type        = string
+}
+
+variable "network_interface_id" {
+  description = "Id of the network interface"
+  type        = string
 }
