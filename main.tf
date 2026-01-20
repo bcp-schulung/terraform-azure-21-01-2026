@@ -94,34 +94,8 @@ resource "azurerm_network_interface_security_group_association" "main" {
 }
 
 # Create the Virtual Machine
-resource "azurerm_linux_virtual_machine" "main" {
-    count = 2
-  name                = "${var.prefix}-vm-${count.index}"
-  resource_group_name = data.azurerm_resource_group.lab.name
-  location            = data.azurerm_resource_group.lab.location
-  size                = var.vm_size
-  admin_username      = var.admin_username
-
-  network_interface_ids = [
-    azurerm_network_interface.main[count.index].id,
-  ]
-
-  admin_ssh_key {
-    username   = var.admin_username
-    public_key = file(var.ssh_public_key_path)
-  }
-
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
-
-  source_image_reference {
-    publisher = var.source_manager_publisher
-    offer     = var.source_manager_offer
-    sku       = var.source_manager_sku
-    version   = var.source_manager_version
-  }
-
-  tags = var.tags
-}
+module "vm" {
+  source= "./modules/vm"
+  resource_group_name = data.azurerm_resource_group.lab
+  resource_group_location = data.azurerm_resource_group.lab
+    }

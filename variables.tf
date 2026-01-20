@@ -1,7 +1,7 @@
 variable "prefix" {
   description = "Prefix for all resource names"
   type        = string
-  default     = "myvm"
+  default     = "lukasvm"
 }
 
 variable "resource_group_name" {

@@ -5,7 +5,7 @@ output "public_ip_address" {
 
 output "vm_name" {
   description = "Name of the virtual machine"
-  value       = azurerm_linux_virtual_machine.main[1].name
+  value       = module.vm.vm_name
 }
 
 output "ssh_command" {
