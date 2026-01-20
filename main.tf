@@ -6,6 +6,14 @@ terraform {
       version = "~> 3.0"
     }
   }
+  backend "azurerm" {
+    storage_account_name = "tfstate2591121144"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+
+    use_azuread_auth = true
+  }
+
   required_version = ">= 1.0"
 }
 
