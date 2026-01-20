@@ -5,7 +5,7 @@ output "name" {
 
 output "ssh_command" {
   description = "SSH command to connect to the VM"
-  value       = "ssh ${var.admin_username}@${azurerm_public_ip}"
+  value       = "ssh ${var.admin_username}@${azurerm_public_ip.main.ip_address}"
 }
 
 output "public_ip" {

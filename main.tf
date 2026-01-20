@@ -40,7 +40,10 @@ module "vm" {
   count = 2
   source                  = "./modules/vm"
 
+  name = "${var.prefix}-vm${count.index + 1}"
   resource_group_name     = data.azurerm_resource_group.lab.name
   resource_group_location = data.azurerm_resource_group.lab.location
   prefix = var.prefix
+  subnet_id = module.network.subnet_id
+  security_group_id = module.security-group.security_group_id
 }

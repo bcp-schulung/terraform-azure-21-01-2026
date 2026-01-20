@@ -3,6 +3,11 @@ variable "prefix" {
   type        = string
 }
 
+variable "name" {
+  description = "Name of the virtual machine"
+  type        = string
+}
+
 variable "resource_group_location" {
   description = "name of the resource group location"
   type = string  
@@ -70,3 +75,12 @@ variable "source_manager_version" {
   default     = "latest"
 }
 
+variable "subnet_id" {
+  description = "Subnet ID"
+  type = string
+}
+
+variable "security_group_id" {
+  description = "Network Security Group ID"
+  type = string
+}

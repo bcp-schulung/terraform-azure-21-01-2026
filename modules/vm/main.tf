@@ -16,7 +16,7 @@ resource "azurerm_network_interface" "main" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.main.id
+    subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.main.id
   }
@@ -24,13 +24,13 @@ resource "azurerm_network_interface" "main" {
 
 # Associate NSG with NIC
 resource "azurerm_network_interface_security_group_association" "main" {
-  network_interface_id      = var.network_interface_id
-  network_security_group_id = azurerm_network_security_group.main.id
+  network_interface_id      = azurerm_network_interface.main.id
+  network_security_group_id = var.security_group_id
 }
 
 # Create the Virtual Machine
 resource "azurerm_linux_virtual_machine" "main" {
-  name                = "${var.prefix}-vm"
+  name                = var.name
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   size                = var.vm_size
