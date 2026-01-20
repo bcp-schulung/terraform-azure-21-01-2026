@@ -33,16 +33,14 @@ module "security-group" {
   prefix = var.prefix
   resource_group_name     = data.azurerm_resource_group.lab.name
   resource_group_location = data.azurerm_resource_group.lab.location
-  network_interface_id   = module.network.network_interface_id
 }
 
 # Create the Virtual Machine
 module "vm" {
+  count = 2
   source                  = "./modules/vm"
 
   resource_group_name     = data.azurerm_resource_group.lab.name
   resource_group_location = data.azurerm_resource_group.lab.location
   prefix = var.prefix
-  public_ip = module.network.public_ip
-  network_interface_id   = module.network.network_interface_id
 }

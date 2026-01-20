@@ -19,8 +19,3 @@ resource "azurerm_network_security_group" "main" {
   tags = var.tags
 }
 
-# Associate NSG with NIC
-resource "azurerm_network_interface_security_group_association" "main" {
-  network_interface_id      = var.network_interface_id
-  network_security_group_id = azurerm_network_security_group.main.id
-}

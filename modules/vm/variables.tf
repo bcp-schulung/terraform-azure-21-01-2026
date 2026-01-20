@@ -70,12 +70,3 @@ variable "source_manager_version" {
   default     = "latest"
 }
 
-variable "public_ip" {
-  description = "value of the public ip in use"
-  type        = string
-}
-
-variable "network_interface_id" {
-  description = "Id of the network interface"
-  type        = string
-}

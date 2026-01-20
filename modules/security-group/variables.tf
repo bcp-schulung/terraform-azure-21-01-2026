@@ -22,7 +22,3 @@ variable "prefix" {
   type        = string
 }
 
-variable "network_interface_id" {
-  description = "Network Interface ID"
-  type = string
-}

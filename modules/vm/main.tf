@@ -1,3 +1,33 @@
+# Create a Public IP
+resource "azurerm_public_ip" "main" {
+  name                = "${var.prefix}-pip"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+
+  tags = var.tags
+}
+# Create a Network Interface
+resource "azurerm_network_interface" "main" {
+  name                = "${var.prefix}-nic"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.main.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.main.id
+  }
+}
+
+# Associate NSG with NIC
+resource "azurerm_network_interface_security_group_association" "main" {
+  network_interface_id      = var.network_interface_id
+  network_security_group_id = azurerm_network_security_group.main.id
+}
+
 # Create the Virtual Machine
 resource "azurerm_linux_virtual_machine" "main" {
   name                = "${var.prefix}-vm"
@@ -7,7 +37,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   admin_username      = var.admin_username
 
   network_interface_ids = [
-    var.network_interface_id,
+    azurerm_network_interface.main.id
   ]
 
   admin_ssh_key {
