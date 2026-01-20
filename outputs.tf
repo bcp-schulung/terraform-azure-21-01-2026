@@ -1,8 +1,3 @@
-output "resource_group_name" {
-  description = "Name of the resource group"
-  value       = azurerm_resource_group.main.name
-}
-
 output "public_ip_address" {
   description = "Public IP address of the VM"
   value       = azurerm_public_ip.main[1].ip_address
