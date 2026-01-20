@@ -14,19 +14,16 @@ provider "azurerm" {
 }
 
 # Create a Resource Group
-resource "azurerm_resource_group" "main" {
-  name     = var.resource_group_name
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "lab" {
+  name = var.resource_group_name
 }
 
 # Create a Virtual Network
 resource "azurerm_virtual_network" "main" {
   name                = "${var.prefix}-vnet"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.lab.location
+  resource_group_name = data.azurerm_resource_group.lab.name
 
   tags = var.tags
 }
@@ -34,7 +31,7 @@ resource "azurerm_virtual_network" "main" {
 # Create a Subnet
 resource "azurerm_subnet" "main" {
   name                 = "${var.prefix}-subnet"
-  resource_group_name  = azurerm_resource_group.main.name
+  resource_group_name  = data.azurerm_resource_group.lab.name
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = ["10.0.1.0/24"]
 }
@@ -43,8 +40,8 @@ resource "azurerm_subnet" "main" {
 resource "azurerm_public_ip" "main" {
     count = 2
   name                = "${var.prefix}-pip-${count.index}"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.lab.location
+  resource_group_name = data.azurerm_resource_group.lab.name
   allocation_method   = "Static"
   sku                 = "Standard"
 
@@ -54,8 +51,8 @@ resource "azurerm_public_ip" "main" {
 # Create a Network Security Group
 resource "azurerm_network_security_group" "main" {
   name                = "${var.prefix}-nsg"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.lab.location
+  resource_group_name = data.azurerm_resource_group.lab.name
 
   security_rule {
     name                       = "SSH"
@@ -76,8 +73,8 @@ resource "azurerm_network_security_group" "main" {
 resource "azurerm_network_interface" "main" {
     count = 2
   name                = "${var.prefix}-nic-${count.index}"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.lab.location
+  resource_group_name = data.azurerm_resource_group.lab.name
 
   ip_configuration {
     name                          = "internal"
@@ -100,8 +97,8 @@ resource "azurerm_network_interface_security_group_association" "main" {
 resource "azurerm_linux_virtual_machine" "main" {
     count = 2
   name                = "${var.prefix}-vm-${count.index}"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.lab.name
+  location            = data.azurerm_resource_group.lab.location
   size                = var.vm_size
   admin_username      = var.admin_username
 
