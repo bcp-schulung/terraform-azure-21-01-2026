@@ -10,6 +10,7 @@ variable "tags" {
 variable "prefix" {
   description = "Prefix for all resource names"
   type        = string
+  default = "schulung"
 
   validation {
     condition = var.prefix != "test"
