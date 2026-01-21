@@ -18,6 +18,26 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Create tfvars for Trivy scanning
+      run: |
+        cat > trivy-scan.tfvars <<EOF
+        subscription_id = "00000000-0000-0000-0000-000000000000"
+        tenant_id = "00000000-0000-0000-0000-000000000000"
+        ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7 dummy@key"
+        EOF
+
+    - name: Run Trivy and output to console
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'config'
+        scan-ref: '.'
+        format: 'table'
+        severity: 'CRITICAL,HIGH,MEDIUM'
+        exit-code: '0'
+        trivy-config: ''
+      env:
+        TRIVY_TF_VARS: trivy-scan.tfvars
+
     - name: Run Trivy vulnerability scanner in IaC mode
       uses: aquasecurity/trivy-action@master
       with:
@@ -27,18 +47,11 @@ jobs:
         output: 'trivy-results.sarif'
         severity: 'CRITICAL,HIGH,MEDIUM'
         exit-code: '1'
+      env:
+        TRIVY_TF_VARS: trivy-scan.tfvars
 
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
-
-    - name: Run Trivy and output to console
-      uses: aquasecurity/trivy-action@master
-      if: always()
-      with:
-        scan-type: 'config'
-        scan-ref: '.'
-        format: 'table'
-        severity: 'CRITICAL,HIGH,MEDIUM'
