@@ -10,11 +10,6 @@ variable "tags" {
 variable "prefix" {
   description = "Prefix for all resource names"
   type        = string
-
-  validation {
-    condition = var.prefix != "test"
-    error_message = "Prefix not correct"
-  }
 }
 
 variable "resource_group_location" {
