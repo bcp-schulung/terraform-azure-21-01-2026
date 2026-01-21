@@ -30,7 +30,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
 
 
 data "azurerm_key_vault" "kv" {
-  name                = "testtest123test"
+  name                = "testtest123testt"
   resource_group_name = var.resource_group_name
 }
 

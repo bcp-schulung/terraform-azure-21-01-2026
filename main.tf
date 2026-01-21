@@ -12,10 +12,6 @@ terraform {
 
 provider "azurerm" {
   features {}
-  use_cli         = false
-  use_oidc        = false
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
 }
 
 # Create a Resource Group
@@ -48,7 +44,7 @@ module "vm" {
   name                    = "${var.prefix}-vm${count.index + 1}"
   resource_group_name     = data.azurerm_resource_group.lab.name
   resource_group_location = data.azurerm_resource_group.lab.location
-  prefix                  = var.prefix
+  prefix = "${var.prefix}-vm${count.index + 1}"
   subnet_id               = module.network.subnet_id
   security_group_id       = module.security-group.security_group_id
 }
