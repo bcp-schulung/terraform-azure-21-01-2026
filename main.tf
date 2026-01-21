@@ -12,6 +12,10 @@ terraform {
 
 provider "azurerm" {
   features {}
+  use_cli         = false
+  use_oidc        = false
+  subscription_id = var.subscription_id
+  tenant_id       = var.tenant_id
 }
 
 # Create a Resource Group
