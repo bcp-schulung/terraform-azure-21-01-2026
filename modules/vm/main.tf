@@ -28,6 +28,17 @@ resource "azurerm_network_interface_security_group_association" "main" {
   network_security_group_id = var.security_group_id
 }
 
+
+data "azurerm_key_vault" "kv" {
+  name                = "testtest123test"
+  resource_group_name = var.resource_group_name
+}
+
+data "azurerm_key_vault_secret" "mysecret" {
+  name         = "publickey"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 # Create the Virtual Machine
 resource "azurerm_linux_virtual_machine" "main" {
   name                = var.name
@@ -42,7 +53,7 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = var.ssh_public_key
+    public_key = data.azurerm_key_vault_secret.mysecret.value
   }
 
   os_disk {

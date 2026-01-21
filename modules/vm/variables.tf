@@ -36,11 +36,6 @@ variable "admin_username" {
   default     = "azureuser"
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key content"
-  type        = string
-}
-
 variable "tags" {
   description = "Tags to apply to all resources"
   type        = map(string)

@@ -51,5 +51,4 @@ module "vm" {
   prefix                  = var.prefix
   subnet_id               = module.network.subnet_id
   security_group_id       = module.security-group.security_group_id
-  ssh_public_key          = var.ssh_public_key
 }
