@@ -20,31 +20,31 @@ data "azurerm_resource_group" "lab" {
 }
 
 module "network" {
-  source                  = "./modules/network"
+  source = "./modules/network"
 
-  prefix = var.prefix
+  prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.lab.name
   resource_group_location = data.azurerm_resource_group.lab.location
 }
 
 
 module "security-group" {
-  source                  = "./modules/security-group"
+  source = "./modules/security-group"
 
-  prefix = var.prefix
+  prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.lab.name
   resource_group_location = data.azurerm_resource_group.lab.location
 }
 
 # Create the Virtual Machine
 module "vm" {
-  count = 2
-  source                  = "./modules/vm"
+  count  = 2
+  source = "./modules/vm"
 
-  name = "${var.prefix}-vm${count.index + 1}"
+  name                    = "${var.prefix}-vm${count.index + 1}"
   resource_group_name     = data.azurerm_resource_group.lab.name
   resource_group_location = data.azurerm_resource_group.lab.location
-  prefix = var.prefix
-  subnet_id = module.network.subnet_id
-  security_group_id = module.security-group.security_group_id
+  prefix                  = var.prefix
+  subnet_id               = module.network.subnet_id
+  security_group_id       = module.security-group.security_group_id
 }
